@@ -13,9 +13,10 @@ function CompanyDetail({ match }) {
       ? state.companies.list.find(c => c._id === match.params.id)
       : null
   );
-  const employees = useSelector(state => state.employees.list).filter(
-    employee => employee.company === company._id
-  );
+  const allEmployees = useSelector(state => state.employees.list);
+  const employees = Array.isArray(allEmployees)
+    ? allEmployees.filter(employee => employee.company === company._id)
+    : null;
   const dispatch = useDispatch();
   const { history } = useReactRouter();
 
@@ -95,7 +96,7 @@ function CompanyDetail({ match }) {
               </tbody>
             </table>
           ) : (
-            <p>Employees not found</p>
+            <p>Loading employees</p>
           )}
           <br />
           <button
