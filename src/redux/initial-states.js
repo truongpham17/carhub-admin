@@ -1,8 +1,3 @@
-export const ADMIN_INITIAL_STATE = {
-  loginLoading: false,
-  info: null,
-};
-
 export const COMPANIES_INITIAL_STATE = {
   getCompaniesLoading: false,
   createCompanyLoading: false,
@@ -12,6 +7,19 @@ export const COMPANIES_INITIAL_STATE = {
 };
 
 export const EMPLOYEES_INITIAL_STATE = {
-  loading: false,
+  getEmployeesLoading: false,
+  createEmployeeLoading: false,
+  updateEmployeeLoading: false,
+  daleteEmployeeLoading: false,
+  list: null,
+};
+
+export const ADMINS_INITIAL_STATE = {
+  info: null,
+  loginLoading: false,
+  getAdminsLoading: false,
+  createAdminLoading: false,
+  updateAdminLoading: false,
+  daleteAdminLoading: false,
   list: null,
 };

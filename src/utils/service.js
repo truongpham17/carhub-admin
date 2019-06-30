@@ -5,10 +5,10 @@ import store from '../redux/store';
 import { API_URL } from './constants';
 
 export default async ({ method = 'GET', data, headers, params, endpoints }) => {
-  const myHeaders = store.getState().admin.info
+  const myHeaders = store.getState().admins.info
     ? {
         ...headers,
-        token: store.getState().admin.info.token,
+        token: store.getState().admins.info.token,
       }
     : headers;
   return axios({

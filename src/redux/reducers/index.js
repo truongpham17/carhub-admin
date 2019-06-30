@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
-import admin from './admin';
 import companies from './companies';
 import employees from './employees';
+import admins from './admins';
 
 export default combineReducers({
-  admin,
   companies,
   employees,
+  admins,
 });

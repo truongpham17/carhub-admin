@@ -86,6 +86,48 @@ function createCompany(dispatch) {
   };
 }
 
+// Update company
+function updateCompanyRequest() {
+  return {
+    type: companiesTypes.UPDATE_COMPANY_REQUEST,
+  };
+}
+function updateCompanySuccess(payload) {
+  return {
+    type: companiesTypes.UPDATE_COMPANY_SUCCESS,
+    payload,
+  };
+}
+function updateCompanyFailure() {
+  return {
+    type: companiesTypes.UPDATE_COMPANY_FAILURE,
+  };
+}
+function updateCompany(dispatch) {
+  return async (id, data, callbacks) => {
+    dispatch(updateCompanyRequest());
+    try {
+      const response = await fetchAPI({
+        method: 'PATCH',
+        endpoints: `/companies/${id}`,
+        data,
+      });
+      if (response.status === 200) {
+        dispatch(updateCompanySuccess(response.data));
+        getCompanies(dispatch)(callbacks);
+      } else {
+        dispatch(updateCompanyFailure());
+        if (callbacks && typeof callbacks.failure === 'function')
+          callbacks.failure();
+      }
+    } catch (error) {
+      dispatch(updateCompanyFailure());
+      if (callbacks && typeof callbacks.failure === 'function')
+        callbacks.failure(error);
+    }
+  };
+}
+
 // Delete company
 function deleteCompanyRequest() {
   return {
@@ -104,12 +146,12 @@ function deleteCompanyFailure() {
   };
 }
 function deleteCompany(dispatch) {
-  return async (data, callbacks) => {
+  return async (id, callbacks) => {
     dispatch(deleteCompanyRequest());
     try {
       const response = await fetchAPI({
         method: 'DELETE',
-        endpoints: `/companies/${data.id}`,
+        endpoints: `/companies/${id}`,
       });
       if (response.status === 200) {
         dispatch(deleteCompanySuccess(response.data));
@@ -133,4 +175,10 @@ function logoutCompanies() {
   };
 }
 
-export { getCompanies, createCompany, deleteCompany, logoutCompanies };
+export {
+  getCompanies,
+  createCompany,
+  deleteCompany,
+  updateCompany,
+  logoutCompanies,
+};

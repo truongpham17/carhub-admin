@@ -4,18 +4,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import useReactRouter from 'use-react-router';
 import { Row, Col, Form, Input, Button, Typography } from 'antd';
 
-import Layout from '../components/layout';
-import { updateAdmin, getAdmins } from '../redux/actions';
-import { formItemLayout, tailFormItemLayout } from '../utils/constants';
+import Layout from '../../components/layout';
+import { updateAdmin, getAdmins } from '../../redux/actions';
+import { formItemLayout, tailFormItemLayout } from '../../utils/constants';
 
-function Profile({ match, form }) {
+function UpdateAdmin({ match, form }) {
   // Form
   const { getFieldDecorator } = form;
 
-  const id = useSelector(state => state.admins.info._id);
   const admin = useSelector(state =>
     Array.isArray(state.admins.list)
-      ? state.admins.list.find(c => c._id === id)
+      ? state.admins.list.find(c => c._id === match.params.id)
       : null
   );
   const [confirmDirty, setConfirmDirty] = useState(false);
@@ -46,10 +45,10 @@ function Profile({ match, form }) {
               }
             : null;
         if (data)
-          updateAdmin(dispatch)(id, data, {
+          updateAdmin(dispatch)(match.params.id, data, {
             success: () => {
               getAdmins(dispatch);
-              history.push(`/`);
+              history.push(`/admins`);
             },
             failure: () => console.log('Update fail!'),
           });
@@ -109,7 +108,7 @@ function Profile({ match, form }) {
         <>
           <Row>
             <Col sm={{ offset: 6 }} md={{ offset: 4 }}>
-              <Typography.Title>Update Profile</Typography.Title>
+              <Typography.Title>Update Admin</Typography.Title>
             </Col>
           </Row>
           <Form {...formItemLayout} onSubmit={handleUpdateAdmin}>
@@ -252,9 +251,9 @@ function Profile({ match, form }) {
   );
 }
 
-Profile.propTypes = {
+UpdateAdmin.propTypes = {
   match: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
 };
 
-export default Form.create({ name: 'update-profile' })(Profile);
+export default Form.create({ name: 'update-admin' })(UpdateAdmin);

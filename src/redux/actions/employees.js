@@ -2,7 +2,7 @@ import fetchAPI from '../../utils/service';
 
 import { employeesTypes } from '../action-types';
 
-// Get companies
+// Get employees
 function getEmployeesRequest() {
   return {
     type: employeesTypes.GET_EMPLOYEES_REQUEST,
@@ -86,6 +86,48 @@ function createEmployee(dispatch) {
   };
 }
 
+// Update employee
+function updateEmployeeRequest() {
+  return {
+    type: employeesTypes.UPDATE_EMPLOYEE_REQUEST,
+  };
+}
+function updateEmployeeSuccess(payload) {
+  return {
+    type: employeesTypes.UPDATE_EMPLOYEE_SUCCESS,
+    payload,
+  };
+}
+function updateEmployeeFailure() {
+  return {
+    type: employeesTypes.UPDATE_EMPLOYEE_FAILURE,
+  };
+}
+function updateEmployee(dispatch) {
+  return async (id, data, callbacks) => {
+    dispatch(updateEmployeeRequest());
+    try {
+      const response = await fetchAPI({
+        method: 'PATCH',
+        endpoints: `/employees/${id}`,
+        data,
+      });
+      if (response.status === 200) {
+        dispatch(updateEmployeeSuccess(response.data));
+        getEmployees(dispatch)(callbacks);
+      } else {
+        dispatch(updateEmployeeFailure());
+        if (callbacks && typeof callbacks.failure === 'function')
+          callbacks.failure();
+      }
+    } catch (error) {
+      dispatch(updateEmployeeFailure());
+      if (callbacks && typeof callbacks.failure === 'function')
+        callbacks.failure(error);
+    }
+  };
+}
+
 // Delete employee
 function deleteEmployeeRequest() {
   return {
@@ -104,12 +146,12 @@ function deleteEmployeeFailure() {
   };
 }
 function deleteEmployee(dispatch) {
-  return async (data, callbacks) => {
+  return async (id, callbacks) => {
     dispatch(deleteEmployeeRequest());
     try {
       const response = await fetchAPI({
         method: 'DELETE',
-        endpoints: `/employees/${data.id}`,
+        endpoints: `/employees/${id}`,
       });
       if (response.status === 200) {
         dispatch(deleteEmployeeSuccess(response.data));
@@ -133,4 +175,10 @@ function logoutEmployees() {
   };
 }
 
-export { getEmployees, createEmployee, deleteEmployee, logoutEmployees };
+export {
+  getEmployees,
+  createEmployee,
+  deleteEmployee,
+  updateEmployee,
+  logoutEmployees,
+};
