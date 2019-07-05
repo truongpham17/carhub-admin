@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import useReactRouter from 'use-react-router';
-import { Row, Col, Form, Input, Button, Typography } from 'antd';
+import { Row, Col, Form, Input, Button, Typography, message } from 'antd';
 
 import Layout from '../components/layout';
 import { updateAdmin, getAdmins } from '../redux/actions';
 import { formItemLayout, tailFormItemLayout } from '../utils/constants';
 
-function Profile({ match, form }) {
+function Profile({ form }) {
   // Form
   const { getFieldDecorator } = form;
 
@@ -49,9 +49,10 @@ function Profile({ match, form }) {
           updateAdmin(dispatch)(id, data, {
             success: () => {
               getAdmins(dispatch);
-              history.push(`/`);
+              history.push('/');
+              message.success('Update profile successfully!');
             },
-            failure: () => console.log('Update fail!'),
+            failure: () => message.error('Update profile unsuccessfully!'),
           });
       }
     });

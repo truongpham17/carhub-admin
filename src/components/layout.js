@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import useReactRouter from 'use-react-router';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Layout, Menu, Breadcrumb, Icon, Dropdown, Button } from 'antd';
+import { Layout, Menu, Dropdown, Button, message } from 'antd';
 
 import { logout } from '../redux/actions';
 
@@ -95,6 +95,7 @@ function LayoutWrapper({ children }) {
   function handleClickLogout() {
     logout(dispatch)();
     history.push('/login');
+    message.success('Logout successfully!');
   }
 
   const activeSideBar =

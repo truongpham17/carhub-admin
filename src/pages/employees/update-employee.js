@@ -2,7 +2,16 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import useReactRouter from 'use-react-router';
-import { Row, Col, Form, Input, Select, Button, Typography } from 'antd';
+import {
+  Row,
+  Col,
+  Form,
+  Input,
+  Select,
+  Button,
+  Typography,
+  message,
+} from 'antd';
 
 import Layout from '../../components/layout';
 import { updateEmployee, getEmployees } from '../../redux/actions';
@@ -55,14 +64,14 @@ function UpdateEmployee({ match, form }) {
                   phone,
                 }
               : null;
-          console.log(data);
           if (data)
             updateEmployee(dispatch)(match.params.id, data, {
               success: () => {
                 getEmployees(dispatch);
                 history.push(`/companies/${employee.company}`);
+                message.success('Update employee successfully!');
               },
-              failure: () => console.log('Update fail!'),
+              failure: () => message.error('Update employee unsuccessfully!'),
             });
         }
       }
@@ -124,9 +133,11 @@ function UpdateEmployee({ match, form }) {
 
   return (
     <Layout>
-      <Col sm={{ offset: 6 }} md={{ offset: 4 }}>
-        <Typography.Title>Update Employee</Typography.Title>
-      </Col>
+      <Row>
+        <Col sm={{ offset: 6 }} md={{ offset: 4 }}>
+          <Typography.Title>Update Employee</Typography.Title>
+        </Col>
+      </Row>
       <Form {...formItemLayout} onSubmit={handleUpdateEmployee}>
         <Form.Item label="Employee ID">
           {getFieldDecorator('employeeID', {

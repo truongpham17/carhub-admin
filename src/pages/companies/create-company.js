@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import useReactRouter from 'use-react-router';
-import { Row, Col, Form, Input, Button, Typography } from 'antd';
+import { Row, Col, Form, Input, Button, Typography, message } from 'antd';
 
 import Layout from '../../components/layout';
 import { createCompany, getCompanies } from '../../redux/actions';
@@ -33,8 +33,9 @@ function CreateCompany({ form }) {
             success: () => {
               getCompanies(dispatch);
               history.push(`/`);
+              message.success('Create company successfully!');
             },
-            failure: () => console.log('Create fail!'),
+            failure: () => message.error('Create company unsuccessfully!'),
           });
       }
     });

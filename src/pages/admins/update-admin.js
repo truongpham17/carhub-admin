@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import useReactRouter from 'use-react-router';
-import { Row, Col, Form, Input, Button, Typography } from 'antd';
+import { Row, Col, Form, Input, Button, Typography, message } from 'antd';
 
 import Layout from '../../components/layout';
 import { updateAdmin, getAdmins } from '../../redux/actions';
@@ -49,8 +49,9 @@ function UpdateAdmin({ match, form }) {
             success: () => {
               getAdmins(dispatch);
               history.push(`/admins`);
+              message.success('Update admin successfully!');
             },
-            failure: () => console.log('Update fail!'),
+            failure: () => message.error('Update admin unsuccessfully!'),
           });
       }
     });

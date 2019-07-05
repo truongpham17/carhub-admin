@@ -12,6 +12,7 @@ import {
   Divider,
   Typography,
   Button,
+  message,
 } from 'antd';
 
 import { getEmployees, deleteEmployee } from '../../redux/actions';
@@ -42,8 +43,8 @@ function CompanyDetail({ match }) {
   function handleDeleteEmployee(id) {
     return function() {
       deleteEmployee(dispatch)(id, {
-        success: () => console.log('Delete employee success!'),
-        failure: e => console.log(`Delete employee fail! Error: ${e}`),
+        success: () => message.success('Delete employee successfully!'),
+        failure: () => message.error('Delete employee unsuccessfully!'),
       });
     };
   }

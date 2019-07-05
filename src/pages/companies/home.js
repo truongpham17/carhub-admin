@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import useReactRouter from 'use-react-router';
-import { Table, Divider, Typography, Button } from 'antd';
+import { Table, Divider, Typography, Button, message } from 'antd';
 
 import Layout from '../../components/layout';
 
@@ -31,8 +31,8 @@ function HomePage() {
   function handleDeleteCompany(id) {
     return function() {
       deleteCompany(dispatch)(id, {
-        success: () => console.log('Delete company success!'),
-        failure: e => console.log(`Delete company fail! Error: ${e}`),
+        success: () => message.success('Delete company successfully!'),
+        failure: () => message.error('Delete company unsuccessfully!'),
       });
     };
   }

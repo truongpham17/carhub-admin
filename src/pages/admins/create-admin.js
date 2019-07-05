@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import useReactRouter from 'use-react-router';
-import { Row, Col, Form, Input, Button, Typography } from 'antd';
+import { Row, Col, Form, Input, Button, Typography, message } from 'antd';
 
 import Layout from '../../components/layout';
 import { createAdmin, getAdmins } from '../../redux/actions';
@@ -37,8 +37,9 @@ function CreateAdmin({ form }) {
             success: () => {
               getAdmins(dispatch);
               history.push(`/admins`);
+              message.success('Create admin successfully!');
             },
-            failure: () => console.log('Create fail!'),
+            failure: () => message.error('Create admin unsuccessfully!'),
           });
       }
     });

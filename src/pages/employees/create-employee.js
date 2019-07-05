@@ -2,7 +2,16 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import useReactRouter from 'use-react-router';
-import { Row, Col, Form, Input, Button, Typography, Select } from 'antd';
+import {
+  Row,
+  Col,
+  Form,
+  Input,
+  Button,
+  Typography,
+  Select,
+  message,
+} from 'antd';
 
 import Layout from '../../components/layout';
 import { createEmployee, getEmployees } from '../../redux/actions';
@@ -49,8 +58,9 @@ function CreateEmployee({ match, form }) {
               success: () => {
                 getEmployees(dispatch);
                 history.push(`/companies/${match.params.id}`);
+                message.success('Create employee successfully!');
               },
-              failure: () => console.log('Create fail!'),
+              failure: () => message.error('Create employee unsuccessfully!'),
             });
         }
       }

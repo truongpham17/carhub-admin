@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import useReactRouter from 'use-react-router';
-import { Row, Col, Form, Input, Button, Typography } from 'antd';
+import { Row, Col, Form, Input, Button, Typography, message } from 'antd';
 
 import Layout from '../../components/layout';
 import { updateCompany, getCompanies } from '../../redux/actions';
@@ -38,8 +38,9 @@ function UpdateCompany({ match, form }) {
             success: () => {
               getCompanies(dispatch);
               history.push(`/`);
+              message.success('Update company successfully!');
             },
-            failure: () => console.log('Update fail!'),
+            failure: () => message.error('Update company unsuccessfully!'),
           });
       }
     });

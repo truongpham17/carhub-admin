@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import useReactRouter from 'use-react-router';
-import { Table, Divider, Typography, Button } from 'antd';
+import { Table, Divider, Typography, Button, message } from 'antd';
 
 import Layout from '../../components/layout';
 
@@ -32,8 +32,8 @@ function AdminsPage() {
   function handleDeleteAdmin(_id) {
     return function() {
       deleteAdmin(dispatch)(_id, {
-        success: () => console.log('Delete admin success!'),
-        failure: e => console.log(`Delete admin fail! Error: ${e}`),
+        success: () => message.success('Delete admin successfully!'),
+        failure: () => message.error('Delete admin unsuccessfully!'),
       });
     };
   }
