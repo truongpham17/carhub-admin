@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import useReactRouter from 'use-react-router';
 import { Table, Divider, Typography, Button, message } from 'antd';
+import dog from '../../dog/dog.jpg';
 
 import Layout from '../../components/layout';
 
@@ -43,6 +44,26 @@ function AdminsPage() {
       title: 'No',
       dataIndex: 'no',
       key: 'no',
+    },
+    {
+      title: 'Avatar',
+      key: 'avatar',
+      render: (text, record) =>
+        console.log(record._id) || (
+          <img
+            alt={record.username}
+            src={`https://smart-accountant-system.herokuapp.com/admins/${record.key}/avatar`}
+            onError={e => {
+              e.target.onerror = null;
+              e.target.src = dog;
+            }}
+            width={50}
+            height={50}
+            style={{
+              borderRadius: '50%',
+            }}
+          />
+        ),
     },
     {
       title: 'Username',
