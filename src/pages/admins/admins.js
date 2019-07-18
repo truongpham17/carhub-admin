@@ -45,26 +45,26 @@ function AdminsPage() {
       dataIndex: 'no',
       key: 'no',
     },
-    {
-      title: 'Avatar',
-      key: 'avatar',
-      render: (text, record) =>
-        console.log(record._id) || (
-          <img
-            alt={record.username}
-            src={`https://smart-accountant-system.herokuapp.com/admins/${record.key}/avatar`}
-            onError={e => {
-              e.target.onerror = null;
-              e.target.src = dog;
-            }}
-            width={50}
-            height={50}
-            style={{
-              borderRadius: '50%',
-            }}
-          />
-        ),
-    },
+    // {
+    //   title: 'Avatar',
+    //   key: 'avatar',
+    //   render: (text, record) =>
+    //     console.log(record._id) || (
+    //       <img
+    //         alt={record.username}
+    //         src={`https://smart-accountant-system.herokuapp.com/admins/${record.key}/avatar`}
+    //         onError={e => {
+    //           e.target.onerror = null;
+    //           e.target.src = dog;
+    //         }}
+    //         width={50}
+    //         height={50}
+    //         style={{
+    //           borderRadius: '50%',
+    //         }}
+    //       />
+    //     ),
+    // },
     {
       title: 'Username',
       key: 'username',
