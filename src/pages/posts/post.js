@@ -83,7 +83,7 @@ function PostDetail({ match }) {
                 <>
                   {post.images.map(url => (
                     <img
-                      widtd={100}
+                      width={100}
                       height={100}
                       style={{
                         marginRight: 12,
@@ -103,9 +103,37 @@ function PostDetail({ match }) {
                 <span>None</span>
               )}
             </Form.Item>
+            <Form.Item label="Address">
+              <Iframe
+                url={encodeURI(
+                  `https://www.google.com/maps/embed/v1/place?key=AIzaSyCTCyUg-66aLBYc3b8e2T__THUz2wG1YJ0&q=${post.seller.address}, ${district.name_with_type}, ${province.name_with_type}`
+                )}
+                height="500px"
+                width="100%"
+                id="myId"
+                className="myClassname"
+                display="initial"
+                position="relative"
+              />
+            </Form.Item>
+
             <Form.Item {...tailFormItemLayout}>
-              <Button type="primary" htmlType="submit">
+              <Button
+                style={{ marginRight: 15 }}
+                type="primary"
+                htmlType="submit"
+              >
                 Back
+              </Button>
+              <Button
+                style={{ marginRight: 15 }}
+                type="primary"
+                htmlType="submit"
+              >
+                Approve
+              </Button>
+              <Button type="primary" htmlType="submit">
+                Delete
               </Button>
             </Form.Item>
           </Form>
