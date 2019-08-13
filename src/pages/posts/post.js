@@ -94,7 +94,7 @@ function PostDetail({ match }) {
                         borderRadius: 3,
                         boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.5)',
                       }}
-                      src={post.images[0]}
+                      src={url}
                       alt="hinh"
                     ></img>
                   ))}

@@ -48,7 +48,7 @@ function LayoutWrapper({ children }) {
   return (
     <Layout>
       <HeaderWrapper>
-        <Logo>SAS Admin Dashboard</Logo>
+        <Logo>Admin Dashboard</Logo>
         <Dropdown
           overlay={
             <Menu>
