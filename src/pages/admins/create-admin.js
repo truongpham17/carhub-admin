@@ -19,15 +19,14 @@ function CreateAdmin({ form }) {
   function handleCreateAdmin(e) {
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
-      const { username, fullname, email, phone, password, confirm } = values;
+      const { name, email, phone, password, confirm } = values;
 
       if (!err) {
         const data =
           password === confirm
             ? {
-                username,
                 password,
-                fullname,
+                name,
                 email,
                 phone,
               }
@@ -65,30 +64,26 @@ function CreateAdmin({ form }) {
     callback();
   };
 
-  const submitDisabled =
-    !form.getFieldValue('username') ||
-    (typeof form.getFieldValue('username') === 'string' &&
-      (form.getFieldValue('username').length < 3 ||
-        form.getFieldValue('username').length > 120)) ||
-    !form.getFieldValue('fullname') ||
-    (typeof form.getFieldValue('fullname') === 'string' &&
-      (form.getFieldValue('fullname').length < 3 ||
-        form.getFieldValue('fullname').length > 80)) ||
-    !form.getFieldValue('email') ||
-    (typeof form.getFieldValue('email') === 'string' &&
-      form.getFieldValue('email').length > 120) ||
-    !form.getFieldValue('phone') ||
-    (typeof form.getFieldValue('phone') === 'string' &&
-      form.getFieldValue('phone').length !== 10) ||
-    !form.getFieldValue('password') ||
-    (typeof form.getFieldValue('password') === 'string' &&
-      (form.getFieldValue('password').length < 6 ||
-        form.getFieldValue('password').length > 120)) ||
-    !form.getFieldValue('confirm') ||
-    (typeof form.getFieldValue('confirm') === 'string' &&
-      (form.getFieldValue('confirm').length < 6 ||
-        form.getFieldValue('confirm').length > 120)) ||
-    form.getFieldValue('password') !== form.getFieldValue('confirm');
+  const submitDisabled = false;
+  // !form.getFieldValue('name') ||
+  // (typeof form.getFieldValue('name') === 'string' &&
+  //   (form.getFieldValue('name').length < 3 ||
+  //     form.getFieldValue('name').length > 80)) ||
+  // !form.getFieldValue('email') ||
+  // (typeof form.getFieldValue('email') === 'string' &&
+  //   form.getFieldValue('email').length > 120) ||
+  // !form.getFieldValue('phone') ||
+  // (typeof form.getFieldValue('phone') === 'string' &&
+  //   form.getFieldValue('phone').length !== 10) ||
+  // !form.getFieldValue('password') ||
+  // (typeof form.getFieldValue('password') === 'string' &&
+  //   (form.getFieldValue('password').length < 6 ||
+  //     form.getFieldValue('password').length > 120)) ||
+  // !form.getFieldValue('confirm') ||
+  // (typeof form.getFieldValue('confirm') === 'string' &&
+  //   (form.getFieldValue('confirm').length < 6 ||
+  //     form.getFieldValue('confirm').length > 120)) ||
+  // form.getFieldValue('password') !== form.getFieldValue('confirm');
 
   return (
     <Layout>
@@ -98,20 +93,16 @@ function CreateAdmin({ form }) {
         </Col>
       </Row>
       <Form {...formItemLayout} onSubmit={handleCreateAdmin}>
-        <Form.Item label="Username">
-          {getFieldDecorator('username', {
+        <Form.Item label="Email">
+          {getFieldDecorator('email', {
             rules: [
               {
+                type: 'email',
+                message: 'Please input valid email!',
+              },
+              {
                 required: true,
-                message: 'Please input username!',
-              },
-              {
-                min: 3,
-                message: 'Username must be at least 3 characters!',
-              },
-              {
-                max: 120,
-                message: 'Username must be at most 120 characters!',
+                message: 'Please input email!',
               },
             ],
           })(<Input />)}
@@ -125,14 +116,6 @@ function CreateAdmin({ form }) {
               {
                 required: true,
                 message: 'Please input password!',
-              },
-              {
-                min: 6,
-                message: 'Password must be at least 6 characters!',
-              },
-              {
-                max: 120,
-                message: 'Password must be at most 120 characters!',
               },
             ],
           })(<Input.Password />)}
@@ -150,38 +133,12 @@ function CreateAdmin({ form }) {
             ],
           })(<Input.Password onBlur={handleConfirmBlur} />)}
         </Form.Item>
-        <Form.Item label="Fullname">
-          {getFieldDecorator('fullname', {
+        <Form.Item label="Name">
+          {getFieldDecorator('name', {
             rules: [
               {
                 required: true,
-                message: 'Please input fullname!',
-              },
-              {
-                min: 3,
-                message: 'Fullname must be at least 3 characters!',
-              },
-              {
-                max: 80,
-                message: 'Fullname must be at most 80 characters!',
-              },
-            ],
-          })(<Input />)}
-        </Form.Item>
-        <Form.Item label="Email">
-          {getFieldDecorator('email', {
-            rules: [
-              {
-                type: 'email',
-                message: 'Please input valid email!',
-              },
-              {
-                required: true,
-                message: 'Please input email!',
-              },
-              {
-                max: 120,
-                message: 'Email must be at most 120 characters!',
+                message: 'Please input name!',
               },
             ],
           })(<Input />)}
@@ -192,11 +149,6 @@ function CreateAdmin({ form }) {
               {
                 required: true,
                 message: 'Please input phone!',
-              },
-              {
-                min: 10,
-                max: 10,
-                message: 'Phone must be 10 characters!',
               },
             ],
           })(<Input />)}

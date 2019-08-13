@@ -1,3 +1,2 @@
-export * from './companies';
-export * from './employees';
+export * from './posts';
 export * from './admins';

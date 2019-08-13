@@ -12,7 +12,7 @@ import { getAdmins, deleteAdmin } from '../../redux/actions';
 const { Title } = Typography;
 
 function AdminsPage() {
-  const id = useSelector(state => state.admins.info._id);
+  const id = useSelector(state => state.admins.info.admin._id);
   const admins = useSelector(state => state.admins.list);
   const dispatch = useDispatch();
   const { history } = useReactRouter();
@@ -51,7 +51,7 @@ function AdminsPage() {
     //   render: (text, record) =>
     //     console.log(record._id) || (
     //       <img
-    //         alt={record.username}
+    //         alt={record.email}
     //         src={`https://smart-accountant-system.herokuapp.com/admins/${record.key}/avatar`}
     //         onError={e => {
     //           e.target.onerror = null;
@@ -66,16 +66,16 @@ function AdminsPage() {
     //     ),
     // },
     {
-      title: 'Username',
-      key: 'username',
+      title: 'Email',
+      key: 'email',
       render: (text, record) => (
-        <Link to={`/admins/${record.key}`}>{record.username}</Link>
+        <Link to={`/admins/${record.key}`}>{record.email}</Link>
       ),
     },
     {
-      title: 'Fullname',
-      dataIndex: 'fullname',
-      key: 'fullname',
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: 'Phone',
@@ -103,8 +103,8 @@ function AdminsPage() {
   const data = Array.isArray(admins)
     ? admins.map((admin, index) => ({
         key: admin._id,
-        username: admin.username,
-        fullname: admin.fullname,
+        email: admin.email,
+        name: admin.name,
         phone: admin.phone,
         no: index + 1,
       }))

@@ -8,7 +8,7 @@ export default async ({ method = 'GET', data, headers, params, endpoints }) => {
   const myHeaders = store.getState().admins.info
     ? {
         ...headers,
-        token: store.getState().admins.info.token,
+        Authorization: `Bearer ${store.getState().admins.info.token}`,
       }
     : headers;
   return axios({

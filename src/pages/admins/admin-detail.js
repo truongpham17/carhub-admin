@@ -34,14 +34,11 @@ function AdminDetail({ match }) {
             <Form.Item label="Admin ID">
               <Input readOnly value={admin._id} />
             </Form.Item>
-            <Form.Item label="Username">
-              <Input readOnly value={admin.username} />
-            </Form.Item>
-            <Form.Item label="Fullname">
-              <Input readOnly value={admin.fullname} />
-            </Form.Item>
             <Form.Item label="Email">
               <Input readOnly value={admin.email} />
+            </Form.Item>
+            <Form.Item label="Name">
+              <Input readOnly value={admin.name} />
             </Form.Item>
             <Form.Item label="Phone">
               <Input readOnly value={admin.phone} />

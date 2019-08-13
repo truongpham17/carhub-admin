@@ -22,73 +22,9 @@ const Logo = styled.div`
   font-weight: bold;
 `;
 
-// const BREADCRUMB_ITEMS = {
-//   companies: {
-//     title: 'Companies',
-//     to: '/',
-//   },
-//   updateCompany: {
-//     title: 'Update company',
-//   },
-//   createCompany: {
-//     title: 'Create company',
-//   },
-//   companyDetail: {
-//     title: 'Company detail',
-//   },
-//   admins: {
-//     title: 'Admins',
-//     to: '/admins',
-//   },
-//   updateAdmin: {
-//     title: 'Update admin',
-//   },
-//   createAdmin: {
-//     title: 'Create admin',
-//   },
-//   adminDetail: {
-//     title: 'Admin detail',
-//   },
-//   updateEmployee: {
-//     title: 'Update employee',
-//   },
-//   createEmployee: {
-//     title: 'Create employee',
-//   },
-//   employeeDetail: {
-//     title: 'Employee detail',
-//   },
-//   profile: {
-//     title: 'Profile',
-//   },
-// };
-
-// function getBreadcrumbs(pathname) {
-//   const {
-//     companies,
-//     updateCompany,
-//     createCompany,
-//     companyDetail,
-//     admins,
-//     updateAdmin,
-//     createAdmin,
-//     adminDetail,
-//     updateEmployee,
-//     createEmployee,
-//     employeeDetail,
-//     profile,
-//   } = BREADCRUMB_ITEMS;
-//   if (pathname === '/') return [companies];
-//   if (pathname === '/companies/create-companies')
-//     return [companies, createCompany];
-//   if (/^\/companies\/.+\/update$/.test(pathname))
-//     return [companies, updateCompany];
-//   if (/^\/companies\/.+$/.test(pathname)) return [companies, companyDetail];
-// }
-
 function LayoutWrapper({ children }) {
   const dispatch = useDispatch();
-  const fullname = useSelector(state => state.admins.info.fullname);
+  const name = useSelector(state => state.admins.info.admin.name);
   const { location, history } = useReactRouter();
   const { pathname } = location;
 
@@ -99,7 +35,7 @@ function LayoutWrapper({ children }) {
   }
 
   const activeSideBar =
-    pathname === '/' || /\/companies/.test(pathname)
+    pathname === '/' || /\/posts/.test(pathname)
       ? '1'
       : /\/admins/.test(pathname)
       ? '2'
@@ -125,7 +61,7 @@ function LayoutWrapper({ children }) {
           }
           placement="bottomCenter"
         >
-          <Button>{fullname}</Button>
+          <Button>{name}</Button>
         </Dropdown>
       </HeaderWrapper>
       <Layout>
@@ -150,7 +86,7 @@ function LayoutWrapper({ children }) {
                 history.push('/');
               }}
             >
-              Companies
+              Posts
             </Menu.Item>
             <Menu.Item
               key="2"

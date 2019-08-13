@@ -9,7 +9,7 @@ export function auth() {
 
     fetchAPI({
       method: 'GET',
-      endpoints: `/admins/${admins.info._id}`,
+      endpoints: `/admins/${admins.info.admin._id}`,
     }).catch(error => {
       // console.log(JSON.stringify(error));
       if (error.toString().includes('401')) {

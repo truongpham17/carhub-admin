@@ -12,7 +12,7 @@ function Profile({ form }) {
   // Form
   const { getFieldDecorator } = form;
 
-  const id = useSelector(state => state.admins.info._id);
+  const id = useSelector(state => state.admins.info.admin._id);
   const admin = useSelector(state =>
     Array.isArray(state.admins.list)
       ? state.admins.list.find(c => c._id === id)
@@ -25,14 +25,14 @@ function Profile({ form }) {
   function handleUpdateAdmin(e) {
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
-      const { username, fullname, email, phone, password, confirm } = values;
+      const { username, name, email, phone, password, confirm } = values;
 
       if (!err) {
         const data =
           !password && !confirm
             ? {
                 username,
-                fullname,
+                name,
                 email,
                 phone,
               }
@@ -40,7 +40,7 @@ function Profile({ form }) {
             ? {
                 username,
                 password,
-                fullname,
+                name,
                 email,
                 phone,
               }
@@ -83,10 +83,10 @@ function Profile({ form }) {
     (typeof form.getFieldValue('username') === 'string' &&
       (form.getFieldValue('username').length < 3 ||
         form.getFieldValue('username').length > 120)) ||
-    !form.getFieldValue('fullname') ||
-    (typeof form.getFieldValue('fullname') === 'string' &&
-      (form.getFieldValue('fullname').length < 3 ||
-        form.getFieldValue('fullname').length > 80)) ||
+    !form.getFieldValue('name') ||
+    (typeof form.getFieldValue('name') === 'string' &&
+      (form.getFieldValue('name').length < 3 ||
+        form.getFieldValue('name').length > 80)) ||
     !form.getFieldValue('email') ||
     (typeof form.getFieldValue('email') === 'string' &&
       form.getFieldValue('email').length > 120) ||
@@ -144,21 +144,21 @@ function Profile({ form }) {
                 ],
               })(<Input />)}
             </Form.Item>
-            <Form.Item label="Fullname">
-              {getFieldDecorator('fullname', {
-                initialValue: admin.fullname,
+            <Form.Item label="Name">
+              {getFieldDecorator('name', {
+                initialValue: admin.name,
                 rules: [
                   {
                     required: true,
-                    message: 'Please input fullname!',
+                    message: 'Please input name!',
                   },
                   {
                     min: 3,
-                    message: 'Fullname must be at least 3 characters!',
+                    message: 'Nname must be at least 3 characters!',
                   },
                   {
                     max: 80,
-                    message: 'Fullname must be at most 80 characters!',
+                    message: 'Nname must be at most 80 characters!',
                   },
                 ],
               })(<Input />)}

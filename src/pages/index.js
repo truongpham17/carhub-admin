@@ -1,6 +1,5 @@
 import login from './login';
-import { home, createCompany, updateCompany, companyDetail } from './companies';
-import { createEmployee, updateEmployee, employeeDetail } from './employees';
+import { home, postDetail } from './posts';
 import { admins, createAdmin, updateAdmin, adminDetail } from './admins';
 import profile from './profile';
 import notFound from './404';
@@ -8,12 +7,7 @@ import notFound from './404';
 export default {
   login,
   home,
-  createCompany,
-  updateCompany,
-  companyDetail,
-  createEmployee,
-  updateEmployee,
-  employeeDetail,
+  postDetail,
   admins,
   createAdmin,
   updateAdmin,

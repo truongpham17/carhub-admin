@@ -1,6 +1,6 @@
 import fetchAPI from '../../utils/service';
 
-import { adminsTypes, companiesTypes, employeesTypes } from '../action-types';
+import { adminsTypes, postsTypes, employeesTypes } from '../action-types';
 
 function loginRequest() {
   return {
@@ -22,11 +22,13 @@ function login(dispatch) {
   return async (data, callbacks) => {
     dispatch(loginRequest());
     try {
+      console.log(data);
       const response = await fetchAPI({
         method: 'POST',
         endpoints: '/admins/login',
         data,
       });
+      console.log(data);
 
       if (response.status === 200) {
         dispatch(loginSuccess(response.data));
@@ -71,7 +73,7 @@ function getAdmins(dispatch) {
         endpoints: '/admins',
       });
       if (response.status === 200) {
-        dispatch(getAdminsSuccess(response.data.admins));
+        dispatch(getAdminsSuccess(response.data));
         if (callbacks && typeof callbacks.failure === 'function')
           callbacks.success();
       } else {
@@ -218,7 +220,7 @@ function logout(dispatch) {
       type: adminsTypes.LOGOUT_ADMINS,
     });
     dispatch({
-      type: companiesTypes.LOGOUT_COMPANIES,
+      type: postsTypes.LOGOUT_POSTS,
     });
     dispatch({
       type: employeesTypes.LOGOUT_EMPLOYEES,

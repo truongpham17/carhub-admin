@@ -1,4 +1,4 @@
-export const API_URL = 'https://smart-accountant-system.herokuapp.com';
+export const API_URL = 'https://hackathon-server-fpt-2019.herokuapp.com';
 
 export const formItemLayout = {
   labelCol: {

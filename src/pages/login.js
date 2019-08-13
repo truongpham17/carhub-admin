@@ -16,9 +16,9 @@ function LoginPage({ form }) {
   function submitLogin(e) {
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
-      const { username, password } = values;
+      const { email, password } = values;
       login(dispatch)(
-        { username, password },
+        { email, password },
         {
           success: () => {
             message.success('Login successfully!');
@@ -31,7 +31,7 @@ function LoginPage({ form }) {
   }
 
   const submitDisabled =
-    !form.getFieldValue('username') || !form.getFieldValue('password');
+    !form.getFieldValue('email') || !form.getFieldValue('password');
 
   return (
     <div>
@@ -50,17 +50,17 @@ function LoginPage({ form }) {
         }}
       >
         <Form.Item>
-          {getFieldDecorator('username', {
+          {getFieldDecorator('email', {
             rules: [
               {
                 required: true,
-                message: 'Please input username!',
+                message: 'Please input email!',
               },
             ],
           })(
             <Input
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="Username"
+              placeholder="Email"
             />
           )}
         </Form.Item>

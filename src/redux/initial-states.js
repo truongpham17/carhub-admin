@@ -1,8 +1,8 @@
-export const COMPANIES_INITIAL_STATE = {
-  getCompaniesLoading: false,
-  createCompanyLoading: false,
-  updateCompanyLoading: false,
-  daleteCompanyLoading: false,
+export const POSTS_INITIAL_STATE = {
+  getPostsLoading: false,
+  createPostLoading: false,
+  updatePostLoading: false,
+  daletePostLoading: false,
   list: null,
 };
 
