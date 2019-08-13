@@ -51,7 +51,7 @@ function AdminDetail({ match }) {
           </Form>
         </>
       ) : (
-        'Employee not found'
+        'Product type not found'
       )}
     </Layout>
   );

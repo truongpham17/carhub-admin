@@ -1,6 +1,6 @@
 import fetchAPI from '../../utils/service';
 
-import { adminsTypes, postsTypes, employeesTypes } from '../action-types';
+import { adminsTypes, postsTypes, productTypesTypes } from '../action-types';
 
 function loginRequest() {
   return {
@@ -223,7 +223,7 @@ function logout(dispatch) {
       type: postsTypes.LOGOUT_POSTS,
     });
     dispatch({
-      type: employeesTypes.LOGOUT_EMPLOYEES,
+      type: productTypesTypes.LOGOUT_productTypeS,
     });
   };
 }

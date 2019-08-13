@@ -6,14 +6,6 @@ export const POSTS_INITIAL_STATE = {
   list: null,
 };
 
-export const EMPLOYEES_INITIAL_STATE = {
-  getEmployeesLoading: false,
-  createEmployeeLoading: false,
-  updateEmployeeLoading: false,
-  daleteEmployeeLoading: false,
-  list: null,
-};
-
 export const ADMINS_INITIAL_STATE = {
   info: null,
   loginLoading: false,
@@ -21,5 +13,21 @@ export const ADMINS_INITIAL_STATE = {
   createAdminLoading: false,
   updateAdminLoading: false,
   daleteAdminLoading: false,
+  list: null,
+};
+
+export const CategorIES_INITIAL_STATE = {
+  getCategoriesLoading: false,
+  createCategoryLoading: false,
+  updateCategoryLoading: false,
+  daleteCategoryLoading: false,
+  list: null,
+};
+
+export const productTypeS_INITIAL_STATE = {
+  getProductTypesLoading: false,
+  createProductTypeLoading: false,
+  updateProductTypeLoading: false,
+  daleteProductTypeLoading: false,
   list: null,
 };

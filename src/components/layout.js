@@ -39,6 +39,8 @@ function LayoutWrapper({ children }) {
       ? '1'
       : /\/admins/.test(pathname)
       ? '2'
+      : /\/categories/.test(pathname)
+      ? '3'
       : undefined;
 
   // console.log(pathname);
@@ -95,6 +97,14 @@ function LayoutWrapper({ children }) {
               }}
             >
               Admins
+            </Menu.Item>
+            <Menu.Item
+              key="3"
+              onClick={() => {
+                history.push('/categories');
+              }}
+            >
+              Categories
             </Menu.Item>
           </Menu>
         </Sider>

@@ -144,9 +144,6 @@ function HomePage() {
         <p>Loading posts</p>
       )}
       <br />
-      <Button onClick={() => history.push('/posts/create-post')}>
-        Create post
-      </Button>
     </Layout>
   );
 }
