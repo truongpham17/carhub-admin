@@ -21,8 +21,7 @@ function App() {
           </BrowserRouter>
         </PersistGate>
       </Provider>
-    </ThemeProvider>
-  );
+    </ThemeProvider> );
 }
 
 export default App;

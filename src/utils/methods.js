@@ -9,7 +9,7 @@ export function auth() {
 
     fetchAPI({
       method: 'GET',
-      endpoints: `/admins/${admins.info.admin._id}`,
+      endpoints: `account/${admins.info._id}`,
     }).catch(error => {
       // console.log(JSON.stringify(error));
       if (error.toString().includes('401')) {
@@ -19,6 +19,7 @@ export function auth() {
     });
 
     return typeof admins.info.token === 'string';
+    // return true;
   } catch (e) {
     return false;
   }

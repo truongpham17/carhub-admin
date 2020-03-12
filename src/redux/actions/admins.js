@@ -25,14 +25,16 @@ function login(dispatch) {
       console.log(data);
       const response = await fetchAPI({
         method: 'POST',
-        endpoints: '/admins/login',
+        endpoints: 'account/login',
         data,
       });
-      console.log(data);
+
+      console.log('come herre!!!');
+      console.log(response.data);
 
       if (response.status === 200) {
         dispatch(loginSuccess(response.data));
-        if (callbacks && typeof callbacks.failure === 'function')
+        if (callbacks && typeof callbacks.success === 'function')
           callbacks.success();
       } else {
         dispatch(loginFailure());

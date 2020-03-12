@@ -1,4 +1,4 @@
-export const API_URL = 'https://hackathon-server-fpt-2019.herokuapp.com';
+export const API_URL = 'http://192.168.1.106:5068/';
 
 export const formItemLayout = {
   labelCol: {
