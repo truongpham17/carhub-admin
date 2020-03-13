@@ -64,3 +64,9 @@ export const productTypesTypes = {
   UPDATE_productType_FAILURE: 'UPDATE_productType_FAILURE',
   LOGOUT_productTypeS: 'LOGOUT_productTypeS',
 };
+
+export const hubTypes = {
+  GET_HUB_REQUEST: 'get-hub-request',
+  GET_HUB_FAILURE: 'get-hub-failure',
+  GET_HUB_SUCCESS: 'get-hub-success',
+};

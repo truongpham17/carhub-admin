@@ -24,7 +24,7 @@ const Logo = styled.div`
 
 function LayoutWrapper({ children }) {
   const dispatch = useDispatch();
-  const name = useSelector(state => state.admins.info.admin.name);
+  const name = useSelector(state => state.admins.info.fullName);
   const { location, history } = useReactRouter();
   const { pathname } = location;
 
@@ -88,15 +88,15 @@ function LayoutWrapper({ children }) {
                 history.push('/');
               }}
             >
-              Posts
+              Hubs
             </Menu.Item>
             <Menu.Item
               key="2"
               onClick={() => {
-                history.push('/admins');
+                history.push('/employees');
               }}
             >
-              Admins
+              Employees
             </Menu.Item>
             <Menu.Item
               key="3"
@@ -104,7 +104,7 @@ function LayoutWrapper({ children }) {
                 history.push('/categories');
               }}
             >
-              Categories
+              Rental booking
             </Menu.Item>
           </Menu>
         </Sider>

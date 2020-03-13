@@ -12,7 +12,7 @@ function Profile({ form }) {
   // Form
   const { getFieldDecorator } = form;
 
-  const id = useSelector(state => state.admins.info.admin._id);
+  const id = useSelector(state => state.admins.info._id);
   const admin = useSelector(state =>
     Array.isArray(state.admins.list)
       ? state.admins.list.find(c => c._id === id)

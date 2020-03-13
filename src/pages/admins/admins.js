@@ -12,7 +12,7 @@ import { getAdmins, deleteAdmin } from '../../redux/actions';
 const { Title } = Typography;
 
 function AdminsPage() {
-  const id = useSelector(state => state.admins.info.admin._id);
+  const id = useSelector(state => state.admins.info._id);
   const admins = useSelector(state => state.admins.list);
   const dispatch = useDispatch();
   const { history } = useReactRouter();

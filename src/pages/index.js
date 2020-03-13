@@ -1,6 +1,8 @@
 import login from './login';
 import { home, postDetail } from './posts';
+import { hubList, createHub } from './hubs';
 import { admins, createAdmin, updateAdmin, adminDetail } from './admins';
+import { employeeList, createEmployee, updateEmployee } from './employee';
 import {
   categories,
   createCategory,
@@ -32,4 +34,10 @@ export default {
   updateProductType,
   productTypeDetail,
   notFound,
+
+  hubList,
+  createHub,
+  employeeList,
+  createEmployee,
+  updateEmployee
 };
