@@ -104,7 +104,23 @@ function LayoutWrapper({ children }) {
                 history.push('/categories');
               }}
             >
-              Rental booking
+              Rental Booking
+            </Menu.Item>
+            <Menu.Item
+              key="4"
+              onClick={() => {
+                history.push('/categories');
+              }}
+            >
+              Lease Booking
+            </Menu.Item>
+            <Menu.Item
+              key="5"
+              onClick={() => {
+                history.push('/categories');
+              }}
+            >
+              Transaction
             </Menu.Item>
           </Menu>
         </Sider>
