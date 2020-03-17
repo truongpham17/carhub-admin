@@ -22,6 +22,21 @@ const privateRoutes = [
     component: pages.hubList,
   },
   {
+    key: 'hub-detail',
+    path: '/hubs/cars',
+    exact: true,
+    redirectTo: '/login',
+    component: pages.carList,
+  },
+  {
+    key: 'hub-detail',
+    path: '/hubs/:id',
+    exact: true,
+    redirectTo: '/login',
+    component: pages.hubDetail,
+  },
+
+  {
     key: 'create-hub',
     path: '/create-hub',
     exact: true,

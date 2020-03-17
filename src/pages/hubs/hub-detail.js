@@ -1,21 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useReactRouter from 'use-react-router';
 import { Row, Col, Form, Input, Button, Typography, message } from 'antd';
 
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import Layout from '../../components/layout';
 import LocationSearchInput from '../../components/location-search';
-import { createHub, getAdmins } from '../../redux/actions';
+import { createHub, updateHub } from '../../redux/actions';
 import { formItemLayout, tailFormItemLayout } from '../../utils/constants';
 
-function CreateHub({ form }) {
+function HubDetail({ form }) {
   // Form
   const { getFieldDecorator } = form;
   const [geometry, setGeometry] = useState(null);
 
-  // const [confirmDirty, setConfirmDirty] = useState(false);
+  const selectedHub = useSelector(state => state.hubs.selectedHub);
+
+  useEffect(() => {
+    setTimeout(() => {
+      form.setFieldsValue({ ...selectedHub });
+    }, 300);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const dispatch = useDispatch();
   const { history } = useReactRouter();
@@ -25,8 +32,6 @@ function CreateHub({ form }) {
       address: '',
     });
   }
-
-  function handleAddressChange() {}
 
   function handleAddressSelect(address, placeID) {
     form.setFieldsValue({ address });
@@ -44,20 +49,26 @@ function CreateHub({ form }) {
       });
   }
 
-  function handleCreateHub(e) {
+  function handleUpdateHub(e) {
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
       console.log(values);
       if (!err) {
-        createHub(dispatch)(
-          { ...values, geometry },
+        updateHub(dispatch)(
+          {
+            _id: selectedHub._id,
+            data: {
+              ...values,
+              geometry: geometry || selectedHub.geometry,
+            },
+          },
           {
             success: () => {
               // getAdmins(dispatch);
               history.push(`/`);
-              message.success('Create hub successfully!');
+              message.success('Update hub successfully!');
             },
-            failure: () => message.error('Create hub failure!'),
+            failure: () => message.error('Update hub failure!'),
           }
         );
       }
@@ -70,10 +81,10 @@ function CreateHub({ form }) {
     <Layout>
       <Row>
         <Col sm={{ offset: 6 }} md={{ offset: 4 }}>
-          <Typography.Title>Create Hub</Typography.Title>
+          <Typography.Title>Hub Detail</Typography.Title>
         </Col>
       </Row>
-      <Form {...formItemLayout} onSubmit={handleCreateHub}>
+      <Form {...formItemLayout} onSubmit={handleUpdateHub}>
         <Form.Item label="Name">
           {getFieldDecorator('name', {
             rules: [
@@ -97,7 +108,7 @@ function CreateHub({ form }) {
             <LocationSearchInput
               address={form.getFieldValue('address')}
               clearAddress={clearAddress}
-              onChange={handleAddressChange}
+              onChange={() => {}}
               onAddressSelect={handleAddressSelect}
             />
           )}
@@ -126,7 +137,11 @@ function CreateHub({ form }) {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button disabled={submitDisabled} type="primary" htmlType="submit">
-            Create
+            Save changes
+          </Button>
+          &nbsp; &nbsp;
+          <Button type="primary" onClick={() => history.push('/hubs/cars')}>
+            Car list
           </Button>
           &nbsp; &nbsp;
           <Button type="primary" onClick={() => history.push('/')}>
@@ -138,8 +153,8 @@ function CreateHub({ form }) {
   );
 }
 
-CreateHub.propTypes = {
+HubDetail.propTypes = {
   form: PropTypes.object.isRequired,
 };
 
-export default Form.create({ name: 'create-hub' })(CreateHub);
+export default Form.create({ name: 'hub-detail' })(HubDetail);

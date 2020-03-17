@@ -1,27 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import useReactRouter from 'use-react-router';
-import { Table, Divider, Typography, Button, message } from 'antd';
+import {
+  Table,
+  Divider,
+  Typography,
+  Button,
+  message,
+  Avatar,
+  Input,
+} from 'antd';
 import './hubs.scss';
 
 import Layout from '../../components/layout';
 
-import { getHubList, getHubDetail } from '../../redux/actions';
+import { getHubDetail } from '../../redux/actions';
 
 const { Title } = Typography;
 
-function HubList() {
-  const hubs = useSelector(state => state.hubs.hubs);
+function CarList() {
+  // const hubs = useSelector(state => state.hubs.hubs);
+  const [transfer, setTransfer] = useState(false);
   const dispatch = useDispatch();
   const { history } = useReactRouter();
-
-  useEffect(() => {
-    getHubList(dispatch)({
-      success: () => console.log('Load hubs success!'),
-      failure: e => console.log(`Load hubs fail! Error: ${e}`),
-    });
-  }, [dispatch]);
+  const carList = useSelector(state => state.hubs.selectedHub.cars);
 
   // function handleDeletePost(id) {
   //   return function() {
@@ -66,19 +69,23 @@ function HubList() {
       key: 'no',
     },
     {
+      title: 'Image',
+      key: 'image',
+      render: item => (
+        <img src={item.image} alt="Car detail" width={100} height={64} />
+      ),
+    },
+
+    {
       title: 'Name',
       key: 'name',
       dataIndex: 'name',
     },
+
     {
-      title: 'Address',
-      key: 'address',
-      dataIndex: 'address',
-    },
-    {
-      title: 'Phone',
-      key: 'phone',
-      dataIndex: 'phone',
+      title: 'Current quantity',
+      key: 'quantity',
+      dataIndex: 'quantity',
     },
 
     {
@@ -96,39 +103,68 @@ function HubList() {
     },
   ];
 
-  const data = Array.isArray(hubs)
-    ? hubs
-        .filter(hub => hub.isActive)
-        .map((hub, index) => ({
-          key: hub._id,
-          name: hub.name,
-          address: hub.address,
-          phone: hub.phone,
-          description: hub.description,
+  const data = Array.isArray(carList)
+    ? carList
+        .filter(car => car.isActive)
+        .map((car, index) => ({
+          key: car._id,
+          name: car.carModel.name,
+          type: car.carModel.type,
+          image: car.carModel.images[0],
+          quantity: 10,
           no: index + 1,
         }))
     : null;
 
   return (
     <Layout>
-      <Title>Hubs</Title>
-      {Array.isArray(data) && Array.isArray(hubs) ? (
+      <Title>Cars</Title>
+      {Array.isArray(data) && Array.isArray(carList) ? (
         <Table
-          columns={columns}
+          columns={
+            transfer
+              ? [
+                  ...columns,
+                  {
+                    title: 'Transfer quantity',
+                    key: 'confirm_quantity',
+                    render: (text, record) => (
+                      <Input
+                        value={123}
+                        onChange={d => console.log(d.nativeEvent)}
+                      />
+                    ),
+                  },
+                ]
+              : columns
+          }
           dataSource={data}
           bordered
           pagination={false}
         />
       ) : (
-        <p>Loading hubs</p>
+        <p>Loading car list</p>
       )}
       <br />
 
-      <div className="button" onClick={() => history.push('/create-hub')}>
-        <Button>Create hub</Button>
+      <div className="button">
+        {!transfer ? (
+          <Button type="primary" onClick={() => setTransfer(true)}>
+            Transfer
+          </Button>
+        ) : (
+          <>
+            <Button type="primary" style={{ marginRight: 16 }}>
+              Confirm transfer
+            </Button>
+            <Button type="primary" onClick={() => setTransfer(false)}>
+              Cancel
+            </Button>
+          </>
+        )}
       </div>
     </Layout>
   );
 }
 
-export default HubList;
+export default CarList;

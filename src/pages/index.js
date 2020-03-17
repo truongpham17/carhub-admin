@@ -1,6 +1,6 @@
 import login from './login';
 import { home, postDetail } from './posts';
-import { hubList, createHub } from './hubs';
+import { hubList, createHub, hubDetail, carList } from './hubs';
 import { admins, createAdmin, updateAdmin, adminDetail } from './admins';
 import { employeeList, createEmployee, updateEmployee } from './employee';
 import {
@@ -39,5 +39,7 @@ export default {
   createHub,
   employeeList,
   createEmployee,
-  updateEmployee
+  updateEmployee,
+  hubDetail,
+  carList,
 };
