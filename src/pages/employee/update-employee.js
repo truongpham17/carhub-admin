@@ -2,27 +2,42 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import useReactRouter from 'use-react-router';
-import { Row, Col, Form, Input, Button, Typography, message } from 'antd';
+import {
+  Row,
+  Col,
+  Form,
+  Input,
+  Button,
+  Typography,
+  message,
+  Menu,
+  Dropdown,
+} from 'antd';
 
+import { DownOutlined } from '@ant-design/icons';
+import moment from 'moment';
 import Layout from '../../components/layout';
-import { createAdmin, getAdmins } from '../../redux/actions';
+import { createAdmin, getAdmins, updateEmployee } from '../../redux/actions';
 import { formItemLayout, tailFormItemLayout } from '../../utils/constants';
 
 function UpdateEmployee({ form }) {
-  const employee = useSelector(state =>
-    state.employees.employees.find(
-      record => record._id === '5e68b423eb1dcca53961be91'
-    )
-  );
   const { getFieldDecorator } = form;
 
-  const [confirmDirty, setConfirmDirty] = useState(false);
+  const selectedEmployee = useSelector(
+    state => state.employees.selectedEmployee
+  );
+  const hubs = useSelector(state => state.hubs.hubs);
+
+  const [selectedHub, setSelectedHub] = useState(selectedEmployee.hub || {});
 
   useEffect(() => {
-    console.log('employee', employee);
-    form.setFieldsValue({
-      ...employee,
-    });
+    setTimeout(() => {
+      selectedEmployee.dateOfBirth = moment(
+        selectedEmployee.dateOfBirth
+      ).format('DD-MM-YYYY');
+      console.log({ selectedEmployee });
+      form.setFieldsValue({ ...selectedEmployee });
+    }, 300);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -32,42 +47,52 @@ function UpdateEmployee({ form }) {
   function handleUpdateEmployee(e) {
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
-      const { name, email, phone, password, confirm } = values;
-
+      const { fullName, email, phone, dateOfBirth } = values;
+      const hub = selectedHub._id;
       if (!err) {
-        const data =
-          password === confirm
-            ? {
-                password,
-                name,
-                email,
-                phone,
-              }
-            : null;
+        const data = {
+          fullName,
+          email,
+          phone,
+          dateOfBirth,
+          hub,
+        };
         if (data)
-          createAdmin(dispatch)(data, {
-            success: () => {
-              getAdmins(dispatch);
-              history.push(`/admins`);
-              message.success('Create admin successfully!');
-            },
-            failure: () => message.error('Create admin unsuccessfully!'),
-          });
+          updateEmployee(dispatch)(
+            { data, _id: selectedEmployee._id },
+            {
+              success() {
+                history.push(`/employees`);
+                message.success('Update employee successfully!');
+              },
+              failure() {
+                message.error('Update employee unsuccessfully!');
+              },
+            }
+          );
       }
     });
   }
 
-  const handleConfirmBlur = e => {
-    const { value } = e.target;
-    setConfirmDirty(confirmDirty || !!value);
-  };
+  function onSelectHub(select) {
+    const hub = hubs.find(item => item._id === select.key);
+    setSelectedHub(hub);
+  }
+
+  const menu = (
+    <Menu onClick={onSelectHub}>
+      {hubs.map(hub => (
+        <Menu.Item key={hub._id}>{hub.name}</Menu.Item>
+      ))}
+    </Menu>
+  );
 
   const submitDisabled = false;
   return (
     <Layout>
       <Row>
         <Col sm={{ offset: 6 }} md={{ offset: 4 }}>
-          <Typography.Title>Create Admin</Typography.Title>
+          <Typography.Title>Employee Detail</Typography.Title>
         </Col>
       </Row>
       <Form {...formItemLayout} onSubmit={handleUpdateEmployee}>
@@ -81,7 +106,7 @@ function UpdateEmployee({ form }) {
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="Avatar">
+        {/* <Form.Item label="Avatar">
           {getFieldDecorator('avatar', {
             rules: [
               {
@@ -90,21 +115,19 @@ function UpdateEmployee({ form }) {
               },
             ],
           })(<Input />)}
-        </Form.Item>
-
+        </Form.Item> */}
         <Form.Item label="Hub">
-          {getFieldDecorator('hub', {
-            rules: [
-              {
-                required: true,
-                message: 'Please input hub!',
-              },
-            ],
-          })(<Input />)}
+          (
+          <Dropdown overlay={menu}>
+            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+              {selectedHub.name} <DownOutlined />
+            </a>
+          </Dropdown>
+          )
         </Form.Item>
 
         <Form.Item label="Birthday">
-          {getFieldDecorator('birthday', {
+          {getFieldDecorator('dateOfBirth', {
             rules: [
               {
                 required: true,
@@ -135,10 +158,10 @@ function UpdateEmployee({ form }) {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button disabled={submitDisabled} type="primary" htmlType="submit">
-            Create
+            Save
           </Button>
           &nbsp; &nbsp;
-          <Button type="primary" onClick={() => history.push('/admins')}>
+          <Button type="primary" onClick={() => history.push('/employees')}>
             Back
           </Button>
         </Form.Item>

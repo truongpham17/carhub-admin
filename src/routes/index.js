@@ -53,16 +53,16 @@ const privateRoutes = [
   },
   {
     key: 'employees',
-    path: '/employees/:id',
+    path: '/update_employee/:id',
     exact: true,
-    redirectTo: '/login',
+    redirectTo: '/employees',
     component: pages.updateEmployee,
   },
   {
-    key: 'create-hub',
+    key: 'create-employee',
     path: '/create-employee',
     exact: true,
-    redirectTo: '/employees/create-employee',
+    redirectTo: '/employees',
     component: pages.createEmployee,
   },
   {
