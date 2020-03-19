@@ -5,3 +5,4 @@ export * from './categories';
 export * from './productTypes';
 export * from './employees';
 export * from './cars';
+export * from './transactions';

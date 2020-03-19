@@ -65,6 +65,15 @@ const privateRoutes = [
     redirectTo: '/employees',
     component: pages.createEmployee,
   },
+
+  {
+    key: 'transactions',
+    path: '/transactions',
+    exact: true,
+    redirectTo: '/login',
+    component: pages.transactions,
+  },
+
   {
     key: 'posts',
     path: '/posts',
@@ -72,6 +81,7 @@ const privateRoutes = [
     redirectTo: '/login',
     component: pages.home,
   },
+
   {
     key: 'post-detail',
     path: '/posts/:id',

@@ -117,7 +117,7 @@ function LayoutWrapper({ children }) {
             <Menu.Item
               key="5"
               onClick={() => {
-                history.push('/categories');
+                history.push('/transactions');
               }}
             >
               Transaction

@@ -3,6 +3,7 @@ import { home, postDetail } from './posts';
 import { hubList, createHub, hubDetail, carList } from './hubs';
 import { admins, createAdmin, updateAdmin, adminDetail } from './admins';
 import { employeeList, createEmployee, updateEmployee } from './employee';
+import { transactions } from './transactions';
 import {
   categories,
   createCategory,
@@ -42,4 +43,5 @@ export default {
   updateEmployee,
   hubDetail,
   carList,
+  transactions,
 };

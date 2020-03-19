@@ -18,7 +18,7 @@ function LoginPage({ form }) {
     form.validateFieldsAndScroll((err, values) => {
       const { username, password } = values;
       login(dispatch)(
-        { username: 'account1', password: '123456' },
+        { username, password },
         {
           success: () => {
             message.success('Login successfully!');
