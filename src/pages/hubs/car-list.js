@@ -15,6 +15,7 @@ import {
   Modal,
   Menu,
   Dropdown,
+  Input,
 } from 'antd';
 import './hubs.scss';
 
@@ -22,28 +23,13 @@ import { DownOutlined } from '@ant-design/icons';
 
 import Layout from '../../components/layout';
 
-import { transferCar, transferCarModel } from '../../redux/actions';
+import { transferCar } from '../../redux/actions';
 
 const { TabPane } = Tabs;
 
 const { Title } = Typography;
 
-function getCarList(cars = []) {
-  const carModels = [];
-  cars
-    .filter(item => !item.customer)
-    .forEach(car => {
-      const duplicateCarModel = carModels.find(
-        item => item._id === car.carModel._id
-      );
-      if (!duplicateCarModel) {
-        carModels.push({ ...car.carModel, quantity: 1 });
-      } else {
-        duplicateCarModel.quantity += 1;
-      }
-    });
-  return carModels;
-}
+const { Search } = Input;
 
 function CarList() {
   // const hubs = useSelector(state => state.hubs.hubs);
@@ -54,35 +40,32 @@ function CarList() {
   const carList = useSelector(state => state.hubs.selectedHub.cars) || [];
   const currentHub = useSelector(state => state.hubs.selectedHub);
   const hubs = useSelector(state => state.hubs.hubs);
-  const carModelList = getCarList(carList);
 
-  const [loadingCarModel, setLoadingCarModel] = useState(false);
-  const [loadingCar, setLoadingCar] = useState(false);
+  const [loadingHubCar, setLoadingHubCar] = useState(false);
+  const [loadingLeasingCar, setLoadingLeasingCar] = useState(false);
   const [isTransfer, setIsTransfer] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedHub, setSelectedHub] = useState(null);
-  const [transfers, setTransfers] = useState(
-    carModelList.map(carModel => ({ _id: carModel._id, quantity: 0 }))
+  const [searchTerm, setSearchTerm] = useState('');
+  const [hubTransfers, setHubTransfers] = useState(
+    carList.map(item => ({ _id: item._id, checked: false }))
   );
   const [leasingTransfer, setLeasingTransfer] = useState(
     carList.map(item => ({ _id: item._id, checked: false }))
   );
 
-  function onChangeQuantity(record, quantity) {
-    setTransfers(transfers =>
-      transfers.map(item => {
-        if (item._id === record.key) {
-          return {
-            ...item,
-            quantity,
-          };
+  function onTransfer(record, checked) {
+    setHubTransfers(transfer =>
+      transfer.map(item => {
+        if (record.key === item._id) {
+          return { ...item, checked };
         }
         return item;
       })
     );
   }
 
-  function onChangeCheckBox(record, checked) {
+  function onLeasingTransfer(record, checked) {
     setLeasingTransfer(leasing =>
       leasing.map(item => {
         if (record.key === item._id) {
@@ -99,17 +82,17 @@ function CarList() {
   }
 
   function onSubmitSuccess() {
-    setLoadingCarModel(false);
+    setLoadingHubCar(false);
     setModalVisible(false);
-    setLoadingCar(false);
+    setLoadingLeasingCar(false);
     history.push('/');
     message.success('Transfer car successfully!');
   }
 
   function onSubmitFailure() {
-    setLoadingCarModel(false);
+    setLoadingHubCar(false);
     setModalVisible(false);
-    setLoadingCar(false);
+    setLoadingLeasingCar(false);
     message.error('Failed to transfer car!');
   }
 
@@ -118,15 +101,15 @@ function CarList() {
       message.error('Please choose hub destination!');
       return;
     }
-    const transfersFilter = transfers.filter(item => item.quantity > 0);
+    const HubTransfersFilter = hubTransfers.filter(item => item.checked);
     const leasingTransferFilter = leasingTransfer.filter(item => item.checked);
-    if (transfersFilter.length > 0) {
-      setLoadingCarModel(true);
-      transferCarModel(dispatch)(
+    if (HubTransfersFilter.length > 0) {
+      setLoadingHubCar(true);
+      transferCar(dispatch)(
         {
-          fromHub: currentHub._id,
-          toHub: selectedHub._id,
-          list: transfersFilter,
+          fromHub: currentHub,
+          toHub: selectedHub,
+          list: HubTransfersFilter,
         },
         {
           success: onSubmitSuccess,
@@ -135,11 +118,11 @@ function CarList() {
       );
     }
     if (leasingTransferFilter.length > 0) {
-      setLoadingCar(true);
+      setLoadingLeasingCar(true);
       transferCar(dispatch)(
         {
-          fromHub: currentHub._id,
-          toHub: selectedHub._id,
+          fromHub: currentHub,
+          toHub: selectedHub,
           list: leasingTransferFilter,
         },
         {
@@ -150,15 +133,15 @@ function CarList() {
     }
   }
 
-  const data = Array.isArray(carModelList)
-    ? carModelList
-        .filter(carModel => carModel.isActive)
-        .map((carModel, index) => ({
-          key: carModel._id,
-          name: carModel.name,
-          type: carModel.type,
-          image: carModel.images[0],
-          quantity: carModel.quantity,
+  const data = Array.isArray(carList)
+    ? carList
+        .filter(car => car.isActive && !car.customer)
+        .map((car, index) => ({
+          key: car._id,
+          name: car.carModel.name,
+          licensePlates: car.licensePlates,
+          vin: car.VIN,
+          note: car.note,
           no: index + 1,
         }))
     : null;
@@ -169,9 +152,12 @@ function CarList() {
         .map((car, index) => ({
           key: car._id,
           name: car.carModel.name,
-          image: car.images[0],
-          no: index + 1,
+          licensePlates: car.licensePlates,
           customer: car.customer.fullName,
+          phone: car.customer.phone,
+          vin: car.VIN,
+          note: car.note,
+          no: index + 1,
         }))
     : null;
 
@@ -183,39 +169,60 @@ function CarList() {
     </Menu>
   );
 
+  const filteredHubCar = data.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredLeaseCar = dataLeasing.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const searchUpdated = term => {
+    setSearchTerm(term);
+  };
+
   return (
     <Layout>
-      <Title>Cars</Title>
-
+      <Title>{currentHub.name}</Title>
+      <Search
+        placeholder="input search text"
+        enterButton="Search"
+        size="large"
+        style={{ width: 400 }}
+        onChange={term => searchUpdated(term.currentTarget.value)}
+      />
       <Tabs defaultActiveKey="1">
         <TabPane tab="Hub car" key="1">
-          {Array.isArray(data) && Array.isArray(carModelList) ? (
+          {Array.isArray(data) && Array.isArray(carList) ? (
             <Table
               columns={
                 isTransfer
                   ? [
                       ...columns,
                       {
-                        title: 'Transfer quantity',
-                        key: 'confirm_quantity',
+                        title: 'Select',
+                        key: 'selectTransfer',
                         render: (text, record) => (
-                          <InputNumber
-                            value={
-                              transfers.find(item => item._id === record.key)
-                                .quantity
-                            }
-                            onChange={quantity =>
-                              onChangeQuantity(record, quantity)
-                            }
-                            min={0}
-                            max={record.quantity}
+                          // <InputNumber
+                          //   value={
+                          //     transfers.find(item => item._id === record.key)
+                          //       .quantity
+                          //   }
+                          //   onChange={quantity =>
+                          //     onChangeQuantity(record, quantity)
+                          //   }
+                          //   min={0}
+                          //   max={record.quantity}
+                          // />
+                          <Checkbox
+                            onChange={e => onTransfer(record, e.target.checked)}
                           />
                         ),
                       },
                     ]
                   : columns
               }
-              dataSource={data}
+              dataSource={filteredHubCar}
               bordered
               pagination={false}
             />
@@ -224,6 +231,7 @@ function CarList() {
           )}
           <br />
         </TabPane>
+
         <TabPane tab="Leasing car" key="2">
           <Table
             columns={
@@ -236,7 +244,7 @@ function CarList() {
                       render: (text, record) => (
                         <Checkbox
                           onChange={e =>
-                            onChangeCheckBox(record, e.target.checked)
+                            onLeasingTransfer(record, e.target.checked)
                           }
                         />
                       ),
@@ -244,7 +252,7 @@ function CarList() {
                   ]
                 : columnsLeasing
             }
-            dataSource={dataLeasing}
+            dataSource={filteredLeaseCar}
             bordered
             pagination={false}
           />
@@ -252,7 +260,6 @@ function CarList() {
           <br />
         </TabPane>
       </Tabs>
-
       <div className="button">
         {!isTransfer ? (
           <Button type="primary" onClick={() => setIsTransfer(true)}>
@@ -287,7 +294,7 @@ function CarList() {
           <Button
             key="submit"
             type="primary"
-            loading={loadingCar || loadingCarModel}
+            loading={loadingLeasingCar || loadingHubCar}
             onClick={() => onSubmitTransfer()}
           >
             Submit
@@ -308,36 +315,47 @@ export default CarList;
 
 const columns = [
   {
-    title: 'STT',
+    title: 'No',
     dataIndex: 'no',
     key: 'no',
   },
-  {
-    title: 'Image',
-    key: 'image',
-    render: item => (
-      <img src={item.image} alt="Car detail" width={100} height={64} />
-    ),
-  },
-
   {
     title: 'Name',
     key: 'name',
     dataIndex: 'name',
   },
-
   {
-    title: 'Current quantity',
-    key: 'quantity',
-    dataIndex: 'quantity',
+    title: 'License Plates',
+    key: 'licensePlates',
+    dataIndex: 'licensePlates',
+  },
+  {
+    title: 'VIN',
+    key: 'vin',
+    dataIndex: 'vin',
+  },
+  {
+    title: 'Description',
+    key: 'note',
+    dataIndex: 'note',
   },
 ];
 
 const columnsLeasing = [
   {
-    title: 'STT',
+    title: 'No',
     dataIndex: 'no',
     key: 'no',
+  },
+  {
+    title: 'Car name',
+    key: 'name',
+    dataIndex: 'name',
+  },
+  {
+    title: 'License Plates',
+    key: 'licensePlates',
+    dataIndex: 'licensePlates',
   },
   {
     title: 'Customer',
@@ -345,16 +363,13 @@ const columnsLeasing = [
     dataIndex: 'customer',
   },
   {
-    title: 'Image',
-    key: 'image',
-    render: item => (
-      <img src={item.image} alt="Car detail" width={100} height={64} />
-    ),
+    title: 'Phone',
+    key: 'phone',
+    dataIndex: 'phone',
   },
-
   {
-    title: 'Car name',
-    key: 'name',
-    dataIndex: 'name',
+    title: 'Description',
+    key: 'note',
+    dataIndex: 'note',
   },
 ];

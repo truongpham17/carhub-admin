@@ -59,9 +59,23 @@ function HubList() {
     };
   }
 
+  function handleViewCarList(_id) {
+    return function() {
+      getHubDetail(dispatch)(_id, {
+        success: () => {
+          history.push('/hubs/cars');
+        },
+        failure: error => {
+          console.log(error);
+          message.error('Fail to load hub');
+        },
+      });
+    };
+  }
+
   const columns = [
     {
-      title: 'STT',
+      title: 'No',
       dataIndex: 'no',
       key: 'no',
     },
@@ -80,17 +94,23 @@ function HubList() {
       key: 'phone',
       dataIndex: 'phone',
     },
-
     {
-      title: '',
+      title: 'Description',
+      key: 'description',
+      dataIndex: 'description',
+    },
+    {
+      title: 'Action',
       key: 'action',
       render: (text, record) => (
         <span>
-          <a onClick={handleViewPost(record.key)}>Detail</a>
+          <a onClick={handleViewPost(record.key)}>Edit</a>
           <Divider type="vertical" />
           <a>Remove</a>
           {/* <Divider type="vertical" />
           <a onClick={handleDeletePost(record.key)}>Delete</a>  */}
+          <Divider type="vertical" />
+          <a onClick={handleViewCarList(record.key)}>Car List</a>
         </span>
       ),
     },

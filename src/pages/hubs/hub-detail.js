@@ -140,10 +140,6 @@ function HubDetail({ form }) {
             Save changes
           </Button>
           &nbsp; &nbsp;
-          <Button type="primary" onClick={() => history.push('/hubs/cars')}>
-            Car list
-          </Button>
-          &nbsp; &nbsp;
           <Button type="primary" onClick={() => history.push('/')}>
             Back
           </Button>
