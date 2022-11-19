@@ -19,7 +19,7 @@
     "react-places-autocomplete": "^7.2.1",
     "react-redux": "^7.1.0-rc.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "react-search-input": "^0.11.3",
     "redux": "^4.0.1",
     "redux-devtools": "^3.5.0",
